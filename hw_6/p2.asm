@@ -10,18 +10,30 @@ main:
   lw $t4, 0xc($t0) # c
   lw $t5, 0x10($t0) # d
   addi $0, 0
-  
-  or $t7, $0, $t2
-  mult $t1, $t2 # ax
-  mflo $t7 # $15 is accumalator
+   
+  jal multByX # ax
+  addi $0, 0
 
-  add $t7, $t7, $t3 # ax + b
+  addu $t7, $t7, $t3 # ax + b
+  jal multByX # ax^2 + bx
+  addi $0, 0
 
-#multByX:
-#  mult 
+  addu $t7, $t7, $t4 # ax^2 + bx + c
+  jal multByX
+  addi $0, 0
 
+  addu $t7, $t7, $t5 # ax^3 + bx^2 + cx + d
+  sw $t7, 0x14($t0)
+  j done
 
+multByX:
+  mult $t7, $t1
+  mflo $t7
+  jr $ra
 
+done:
+  ori $v0 10
+  syscall
 
   .data
 x: .word 2
