@@ -29,14 +29,16 @@ main:
   sw $t1, 0x04($t0)
   j done
 
-done:
-  ori $v0 10
-  syscall
-
 multByX:
   mult $t1, $t2 
   mflo $t1
   jr $ra
+
+done:
+  ori $v0 10
+  syscall
+
+
 
   .data
 x: .word 10
